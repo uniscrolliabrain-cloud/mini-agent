@@ -1,0 +1,19 @@
+# Contexto de build: solo lo necesario para la imagen de la API
+.git
+.github
+.venv
+venv
+__pycache__
+*.pyc
+data
+.pytest_cache
+.ruff_cache
+tests
+frontend
+.env
+.env.*
+!.env.example
+*.log
+*.md
+Dockerfile
+.dockerignore

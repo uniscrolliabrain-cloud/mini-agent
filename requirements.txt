@@ -1,7 +1,13 @@
-google-genai>=0.3.0
-httpx>=0.27
-python-dotenv>=1.0
-streamlit>=1.40
-fastapi>=0.115
-uvicorn[standard]>=0.30
-duckduckgo-search>=6.0
+# Versiones con cota inferior y superior para que el despliegue sea reproducible.
+# Requiere Python >= 3.10 (ddgs) y < 4.0.
+google-genai>=1.0,<3.0
+httpx>=0.27,<1.0
+python-dotenv>=1.0,<2.0
+streamlit>=1.40,<2.0
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+# Busqueda web: el paquete `duckduckgo-search` fue renombrado a `ddgs`
+# (https://pypi.org/project/ddgs). tools/search.py importa ddgs y, por
+# compatibilidad, acepta tambien el nombre antiguo si estuviera instalado.
+ddgs>=9.0,<10.0
+

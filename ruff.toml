@@ -1,0 +1,23 @@
+line-length = 120
+target-version = "py310"
+
+[lint]
+select = ["E", "F", "W", "I", "B", "S", "SIM", "RUF", "C4", "UP", "BLE", "RET"]
+ignore = [
+  "E501",   # el limite de longitud lo aplica line-length del formatter
+  "RUF001", # caracteres unicode ambiguos: el proyecto esta en espanol
+  "RUF002",
+  "RUF003",
+  "S311",   # random no criptografico: no aplica
+]
+
+[lint.per-file-ignores]
+# Los tests mockean a proposito y usan assert
+"tests/*" = ["S101", "BLE001", "SLF001"]
+# app.py y las tools son fronteras con servicios externos/UI: el catch amplio es intencional
+"app.py" = ["BLE001"]
+"api.py" = ["BLE001"]
+"tools/search.py" = ["BLE001"]
+
+[lint.isort]
+known-first-party = ["config", "memory", "agent", "api", "google_auth", "tools"]

@@ -1,10 +1,35 @@
+# secretos
 .env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# datos generados
 data/
+*.bak
+*.tmp
+
+# python
 __pycache__/
 *.pyc
+*.pyo
 .venv/
 venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# streamlit
 .streamlit/
+
+# node / frontend
 node_modules/
-frontend/dist/
 frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# logs
+*.log
+
