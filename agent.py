@@ -199,12 +199,15 @@ def chat(
     tools = [_build_tool()]
     last_text = ""
     steps = max(1, int(max_steps))
+    # El system_prompt se reconstruye una sola vez por turno (no por paso):
+    # lee memoria, ordena goals y formatea SOPs — no hay razón para repetirlo.
+    system_instruction = _system_prompt(store)
 
     for step in range(steps):
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=contents,
-            config=types.GenerateContentConfig(tools=tools, system_instruction=_system_prompt(store)),
+            config=types.GenerateContentConfig(tools=tools, system_instruction=system_instruction),
         )
         candidates = response.candidates or []
         content = candidates[0].content if candidates else None

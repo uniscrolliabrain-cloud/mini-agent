@@ -93,7 +93,7 @@ if prompt := st.chat_input("Que quieres hacer?"):
                     st.session_state.store,
                     safe_mode=st.session_state.safe_mode,
                 )
-            except Exception as e:  # noqa: BLE001 - frontera de la UI: se muestra el error
+            except Exception as e:
                 reply = f"❌ Error: `{e}`"
         st.markdown(reply)
     st.session_state.messages.append({"role": "assistant", "content": reply})

@@ -3,14 +3,10 @@ import base64
 import email
 
 import pytest
+from conftest import FakeResponse
 
-import tools.calendar as calendar_tool
-import tools.discord as discord_tool
 import tools.drive as drive_tool
 import tools.gmail as gmail_tool
-import tools.search as search_tool
-from config import DEFAULT_TIMEZONE
-from conftest import FakeResponse
 
 
 # ------------------------------------------------------------------ Gmail

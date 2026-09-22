@@ -1,3 +1,39 @@
+> **AVISO:** este informe describe el estado en el commit `a9a2db7` (pre-fixes,
+> "feat: mini-agent"). Los fixes se aplicaron en el commit `149b0e0`
+> ("fix: limpia 26 fallos + docker + tests + audit") y en commits posteriores.
+> El código de `master` **ya no está intacto**: los parches están aplicados.
+> Ver tabla de estado de los hallazgos:
+>
+> | # | Severidad | Hallazgo | Estado | Commit |
+> |---|---|---|---|---|
+> | C-1 | Crítico | Path traversal: `user_id` escribe fuera de `data/` | ✅ fix | `149b0e0` |
+> | C-2 | Crítico | API sin auth, CORS `*`, `/memory/{user_id}` abierto | ✅ fix | `149b0e0` |
+> | A-1 | Alto | `web_search` devuelve 0 resultados en silencio | ✅ fix | `149b0e0` |
+> | A-2 | Alto | `safe_mode=False` por defecto; aprobación eludible | ✅ fix | `149b0e0` |
+> | A-3 | Alto | `memory.json` corrupto borra toda la memoria | ✅ fix | `149b0e0` |
+> | A-4 | Alto | `calendar_create` envía cuerpos inválidos (date/dateTime/timeZone) | ✅ fix | `149b0e0` |
+> | A-5 | Alto | `drive_read` no lee Sheets/Slides (usa `alt=media` en vez de export) | ✅ fix | `149b0e0` |
+> | M-1 | Medio | `drive_search` inyecta nombre sin escapar | ✅ fix | `149b0e0` |
+> | M-2 | Medio | LLM pisa hechos (`confidence` 1.0), no-ops como `ok` | ✅ fix | `149b0e0` |
+> | M-3 | Medio | `DATA_DIR` relativo al CWD | ✅ fix | `149b0e0` |
+> | M-4 | Medio | `episodic.jsonl` sin pruning + reescritura completa | ✅ fix | `149b0e0` |
+> | M-5 | Medio | `GOOGLE_API_KEY` enmascara `GEMINI_API_KEY` | ✅ fix | `149b0e0` |
+> | M-6 | Medio | README roto: falta `.env.example`, `DISCORD_BOT_TOKEN` | ✅ fix | `149b0e0` |
+> | M-7 | Medio | Sin tests, CI, lint ni lockfile | ✅ fix | `149b0e0` |
+> | B-1 | Bajo | `.gitignore` no ignora `frontend/.env*` | ✅ fix | `149b0e0` |
+> | B-2 | Bajo | `frontend/package-lock.json` no versionado | ✅ fix | `149b0e0` |
+> | B-3 | Bajo | Frontend: falta `r.ok`, `user_id` sin encode, proxy muerto | ✅ fix | `149b0e0` |
+> | B-4 | Bajo | `api.py` dicts globales sin lock ni expiración | ✅ fix | `149b0e0` |
+> | B-5 | Bajo | `agent.py`: `max_steps` pierde respuesta, `dict(fc.args)` con None | ⚠️ parcial | `149b0e0` |
+> | B-6 | Bajo | Discord: truncado silencioso, `limit>100` ⇒ 400, 429 no gestionado | ✅ fix | `149b0e0` |
+> | B-7 | Bajo | `tools/search.py` promete fallback que no existe | ✅ fix | `149b0e0` |
+> | B-8 | Bajo | `.env` con drift (`GOOGLE_REAL` duplicada, claves muertas) | ✅ fix | `149b0e0` |
+> | B-9 | Bajo | Imports sin ordenar, `bare except`, variable sin usar | ✅ fix | `149b0e0` |
+> | B-10 | Bajo | `app.py` Streamlit no verificado | ✅ fix | `149b0e0` |
+>
+> Los bugs de endurecimiento posterior detectados tras validar el reporte se
+> documentan en `STATUS.md` y se corrigen en este mismo commit.
+
 # Auditoría técnica de `mini-agent`
 
 - **Fecha:** 2026-09-22
@@ -37,7 +73,10 @@ El repo es un vertical slice funcional y legible, pero **no está listo para des
 | B-9 | Bajo | Calidad: 12 imports sin ordenar, 4 `bare except`, 5 `blind except`, 1 variable sin usar | Reproducido (ruff) |
 | B-10 | Bajo | `app.py`: `st.checkbox(value=..., key="safe_mode")`; sin verificar (Streamlit no instalado) | No verificado |
 
-> **No se ha aplicado ningún arreglo.** Este informe documenta fallos y propone parches; el código de `master` sigue intacto.
+> **AVISO (actualización):** los arreglos propuestos en este informe **ya se han aplicado**
+> en el commit `149b0e0` y confirmados en este repo. El código de `master` no está intacto:
+> ver la tabla de estado en la cabecera de este fichero. Los bugs de endurecimiento
+> posterior (ver `STATUS.md`) se corrigen en el commit actual.
 
 ## 2. Método y entorno
 

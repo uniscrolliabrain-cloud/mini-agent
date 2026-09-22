@@ -1,8 +1,8 @@
-from .gmail import gmail_list, gmail_send, gmail_create_draft
+from .calendar import calendar_create, calendar_list
+from .discord import discord_read, discord_send
 from .drive import drive_list, drive_read, drive_search
-from .calendar import calendar_list, calendar_create
-from .discord import discord_send, discord_read
-from .search import web_search, email_search
+from .gmail import gmail_create_draft, gmail_list, gmail_send
+from .search import email_search, web_search
 
 BASE_HANDLERS = {
     "gmail_list": gmail_list,

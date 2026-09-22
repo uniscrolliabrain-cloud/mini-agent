@@ -10,12 +10,11 @@ from config import DATA_DIR, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFR
 
 logger = logging.getLogger("mini_agent.google_auth")
 
-TOKEN_URL = "https://oauth2.googleapis.com/token"
+TOKEN_URL = "https://oauth2.googleapis.com/token"  # noqa: S105 - no es un password, es una URL
 CACHE_PATH = DATA_DIR / "_google_token.json"
 _EXPIRY_MARGIN = 60  # segundos de margen antes de considerar el token caducado
 
 _refresh_lock = threading.Lock()
-_cache = {"token": None, "expires_at": 0}
 
 
 def _load_cache() -> dict:
@@ -27,6 +26,9 @@ def _load_cache() -> dict:
         except (OSError, ValueError) as e:
             logger.warning("cache de token ilegible (%s), se renovara", e)
     return {"token": None, "expires_at": 0}
+
+
+_cache = _load_cache()  # carga la cache en disco al arranque (no solo en RAM)
 
 
 def _save_cache(token: str, expires_at: float) -> None:

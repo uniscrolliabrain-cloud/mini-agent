@@ -39,7 +39,7 @@ def web_search(query: str, max_results: int = 5) -> dict:
         ddgs_cls = _ddgs_class()
         with ddgs_cls() as ddgs:
             raw = list(ddgs.text(q, max_results=limit))
-    except Exception as e:  # noqa: BLE001 - frontera con una libreria externa
+    except Exception as e:
         logger.warning("web_search fallo: %s", e)
         return {"results": [], "query": q, "error": f"{type(e).__name__}: {e}"}
 
@@ -65,7 +65,7 @@ def email_search(query: str) -> dict:
         return {"gmail": {"messages": []}, "web": {"results": []}, "query": q, "error": "query vacia"}
     try:
         gmail_part = gmail_list(max_results=5, query=q)
-    except Exception as e:  # noqa: BLE001 - gmail puede fallar por credenciales/cuota
+    except Exception as e:
         gmail_part = {"messages": [], "error": str(e)[:200]}
     return {"gmail": gmail_part, "web": web_search(q, max_results=5), "query": q}
 

@@ -180,16 +180,18 @@ class MemoryStore:
         return e["value"] if e else None
 
     def semantic_all(self): return {k: v["value"] for k, v in self._data["semantic"].items()}
-    def semantic_all_with_meta(self): return self._data["semantic"]
+    def semantic_all_with_meta(self): return dict(self._data["semantic"])
 
     def semantic_search(self, query: str = ""):
         q = (query or "").lower()
-        if not q: return self.semantic_all()
+        if not q:
+            return self.semantic_all()
         out = {}
         for k, v in self._data["semantic"].items():
             if q in k.lower() or q in str(v.get("value", "")).lower():
                 # filtrar baja confianza
-                if v.get("confidence", 1.0) < 0.35: continue
+                if v.get("confidence", 1.0) < 0.35:
+                    continue
                 out[k] = v["value"]
         return out
 
@@ -214,7 +216,7 @@ class MemoryStore:
         e = self._data["procedural"].get(name)
         return e["steps"] if e else None
     def procedural_all(self): return {k: v["steps"] for k, v in self._data["procedural"].items()}
-    def procedural_all_meta(self): return self._data["procedural"]
+    def procedural_all_meta(self): return dict(self._data["procedural"])
 
     # goals (idea repo grande - GoalStack simplificado)
     def goal_add(self, description: str, priority: int = 50) -> dict:
@@ -235,7 +237,7 @@ class MemoryStore:
             self._data["goals"] = sorted(self._data["goals"], key=lambda g: -g["priority"])[-20:]
             self._save()
             return {"ok": True, "description": description, "priority": priority}
-    def goal_list(self): return self._data["goals"]
+    def goal_list(self): return list(self._data["goals"])
     def goal_top(self): return self._data["goals"][0] if self._data["goals"] else None
 
     def snapshot(self):

@@ -1,12 +1,12 @@
 """Tests de Calendar, Discord y busqueda web (sin red)."""
 import pytest
+from conftest import FakeResponse
 
 import tools.calendar as calendar_tool
 import tools.discord as discord_tool
 import tools.gmail as gmail_tool
 import tools.search as search_tool
 from config import DEFAULT_TIMEZONE
-from conftest import FakeResponse
 
 EVENTO_OK = FakeResponse(payload={"id": "E1", "htmlLink": "https://cal/E1"})
 
@@ -128,7 +128,7 @@ def test_discord_rate_limit_da_un_mensaje_util(install_fake_http, monkeypatch):
 
 # ------------------------------------------------------------------ Busqueda web
 class _FakeDDGS:
-    results = []
+    results = []  # noqa: RUF012 - mock, intencional
     error = None
 
     def __init__(self, *args, **kwargs):

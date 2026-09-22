@@ -104,7 +104,7 @@ def chat_endpoint(inp: ChatIn) -> ChatOut:
     working.add("user", inp.message)
     try:
         reply = chat(inp.message, working, store, safe_mode=inp.safe_mode)
-    except Exception as e:  # noqa: BLE001 - frontera HTTP: se devuelve 500 con detalle
+    except Exception as e:
         logger.exception("chat fallo para %s", inp.user_id)
         raise HTTPException(status_code=500, detail=f"error interno: {e}") from e
     working.add("assistant", reply)
